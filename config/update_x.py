@@ -39,7 +39,7 @@ from QUANTAXIS.QASU.main import (QA_SU_save_etf_day, QA_SU_save_etf_min,
                                  QA_SU_save_stock_divyield_his)
 
 if __name__ == '__main__':
-    QA_SU_save_stock_day('tdx', paralleled=True)
+    QA_SU_save_stock_day('tdx')
     QA_SU_save_stock_xdxr('tdx')
     QA_SU_save_stock_min('tdx')
     QA_SU_save_index_day('tdx', paralleled=True)
