@@ -58,22 +58,22 @@ class QA_Setting():
 
     def get_mongo(self):
         config = configparser.ConfigParser()
-        if os.path.exists(CONFIGFILE_PATH):
-            config.read(CONFIGFILE_PATH)
-
-            try:
-                res = config.get('MONGODB', 'uri')
-            except:
-                res = DEFAULT_DB_URI
-
+        if os.getenv('MONGODB') is not None:
+            res = 'mongodb://{}:27017'.format(os.getenv('MONGODB'))
         else:
-            config = configparser.ConfigParser()
-            config.add_section('MONGODB')
-            config.set('MONGODB', 'uri', DEFAULT_DB_URI)
-            f = open('{}{}{}'.format(setting_path, os.sep, 'config.ini'), 'w')
-            config.write(f)
-            res = DEFAULT_DB_URI
-
+            if os.path.exists(CONFIGFILE_PATH):
+                config.read(CONFIGFILE_PATH)
+                try:
+                    res = config.get('MONGODB', 'uri')
+                except:
+                    res = DEFAULT_DB_URI
+            else:
+                config = configparser.ConfigParser()
+                config.add_section('MONGODB')
+                config.set('MONGODB', 'uri', DEFAULT_DB_URI)
+                f = open('{}{}{}'.format(setting_path, os.sep, 'config.ini'), 'w')
+                config.write(f)
+                res = DEFAULT_DB_URI
         return res
 
     def get_config(
@@ -365,7 +365,7 @@ else:
         # origin
         {"ip": "106.14.95.149", "port": 7727, "name": "扩展市场上海双线"},
         {"ip": "112.74.214.43", "port": 7727, "name": "扩展市场深圳双线1"},
-        #{"ip": "113.105.142.136", "port": 443, "name": "扩展市场东莞主站"},
+        # {"ip": "113.105.142.136", "port": 443, "name": "扩展市场东莞主站"},
         {"ip": "119.147.86.171", "port": 7727, "name": "扩展市场深圳主站"},
         {"ip": "119.97.185.5", "port": 7727, "name": "扩展市场武汉主站1"},
         {"ip": "120.24.0.77", "port": 7727, "name": "扩展市场深圳双线2"},
@@ -383,7 +383,6 @@ else:
         # added 20190222 from tdx
         {"ip": "119.147.86.171", "port": 7721, "name": "扩展市场深圳主站"},
         {"ip": "47.107.75.159", "port": 7727, "name": "扩展市场深圳双线3"},
-
 
     ]
     with open(FUTURE_IP_FILE_PATH, "w") as f:
